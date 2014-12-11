@@ -1,0 +1,61 @@
+#!/bin/bash
+# Intrusion Detection Script
+#
+
+
+function detect_pms {
+	for module in $(ls -1 /etc/idsh/modules/pms/*); do
+		if which $(basename $module) &>/dev/null; then
+			basename $module
+			return 0
+		fi
+	done
+	echo unknown
+	return 1
+}
+
+function get_config {
+	CONFIG_FILE="/etc/idsh/idsh.conf"
+	MODULE_PATH="/etc/idsh/modules/"	
+
+	if [ ! -e $CONFIG_FILE ] ; then
+		echo "ERROR: Couldn't open $CONFIG_FILE"
+		exit 1
+	fi	
+
+	. $CONFIG_FILE
+	
+	if [ -z "$PMS" -o "$PMS" == "auto" ] ; then
+		PMS=$(detect_pms)
+		if [ "$PMS" == "unknown" ] ; then
+			echo "ERROR: No matching PMS-Module found!"
+			exit 1
+		fi
+	fi
+
+	if [ -z "$OUTPUT" ] ; then
+		OUTPUT=raw
+	fi
+	
+	if [ ! -e "${MODULE_PATH}/output/${OUTPUT}" ] ; then
+		echo "ERROR: Couldn't open output-Module: ${MODULE_PATH}/output/${OUTPUT}"
+		exit 1
+	fi
+	. ${MODULE_PATH}/output/${OUTPUT}
+
+	if [ ! -e "${MODULE_PATH}/pms/${PMS}" ] ; then
+		echo "ERROR: Couldn't load PMS-Module: ${MODULE_PATH}/pms/${PMS}"
+		exit 1
+	fi
+	. ${MODULE_PATH}/pms/${PMS}
+}
+
+function main {
+	get_config
+
+	CONFIG_FILE_CHECK=$CONFIG_FILE_CHECK pms_run | output_run	
+
+	return 0
+}
+
+main
