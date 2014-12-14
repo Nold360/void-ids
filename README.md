@@ -20,15 +20,20 @@ So all the tools you would probably need are on your system, you just got to use
 Structure & Modules
 ====
 
-idsh should be as portable and as modular as possible. That's why the input and output 
-is done by "modules"; small scripts that have specific functions and return their output
-in a specific way.
+idsh should be as portable and as modular as possible. That's why the input, filtering and output 
+is done by "modules"; small scripts (or even binarys) that take data, do something with it, and
+print them out againt.
 
-A pms (Package Management System) modules has alsways a "pms_run"-function that retruns
-the result in the way "rpm -V" does. (See http://www.rpm.org/max-rpm/s1-rpm-verify-output.html).
+A pms (Package Management System) modules scans it package database and prints it status out.
+The result is formated in the way "rpm -V" does. But using ";" instead of spaces. 
+(See http://www.rpm.org/max-rpm/s1-rpm-verify-output.htm).
 
-Then this result is piped to an "output"-Modules "output_run"-function. 
-It takes the output of the pms-module and does something with it. 
+In the next step the output is piped to one or multiple "filter"-modules, which will do
+what there name says. By default it's "none". But you could also use "no_config" to
+ignore changed config files.
+
+In the last step the filtered result is piped to one or multiple "output"-Modules. 
+It takes the output of the filtered pms-module and does something with it. 
 
 F.e. the default Module is "raw" which simply prints out everything it gets.
 But you also could pase it to a Database or an monitoring System to save or report the data.

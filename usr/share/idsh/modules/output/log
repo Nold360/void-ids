@@ -1,0 +1,7 @@
+# Log everything into file
+
+LOG_FILE=/tmp/idsh.log
+
+read data
+echo $data >> $LOG_FILE
+exit 0

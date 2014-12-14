@@ -1,0 +1,6 @@
+# IDSH Default RAW Output Module
+# This Plugin just prints out everything in output_run
+
+read data
+echo $data
+exit 0

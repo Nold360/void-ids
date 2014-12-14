@@ -1,0 +1,6 @@
+# ignore config files
+
+read data
+echo $data
+echo $data | egrep -v "^........;c;"
+exit 0

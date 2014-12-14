@@ -3,27 +3,31 @@
 # IDSH - Intrusion Detection Script 
 # Package Manager Module
 #
-# Package Managemant System: dpkg
+# PMS: dpkg
 
-function pms_prerun {
-	return 0
-}
+CONFIG_FILE_CHECK=false
 
-
+## dpkg
+## cd / ; md5sum --quiet -c /var/lib/dpkg/info/$PACKAGE_NAME.md5sums
+### Failed:
+## usr/sbin/lighttpd: FAILED
+## md5sum: WARNING: 1 computed checksum did NOT match
+##
+### Missing:
+## md5sum: usr/sbin/lighttpd: No such file or directory
+## usr/sbin/lighttpd: FAILED open or read
+## md5sum: WARNING: 1 listed file could not be read
 function pms_run {
 	CONFIG_FILE_DB="/var/cache/idsh_pms_dpkg.db"
 
-	pms_prerun
-
 	# dpkg < 1.17 doesn't support "--verify"... we need some workaround...
-	#
 	if [ $(dpkg --version | egrep -o [0-9]\.[0-9]*\.[0-9]* | head -1 | cut -f2 -d.) -lt 17 ] ; then
 		# We need to move to /, because 
 		dir=$(pwd)
 		cd /
 	
 		failed_packages=()
-		for package in $(dpkg -l | egrep "^ii" | awk '{print $2}') ; do	
+		for package in $(dpkg -l | egrep "^ii" | awk '{print $2}' | grep -A10 lighttpd) ; do	
 			md5sum --quiet -c /var/lib/dpkg/info/${package}.md5sums 2>&1 | grep FAILED |\
 			while read line ; do
 				if [[ "$line" =~ .*FAILED.open.or.read ]] ; then
@@ -80,3 +84,5 @@ function pms_postrun {
 	fi
 	return 0
 }
+
+pms_run

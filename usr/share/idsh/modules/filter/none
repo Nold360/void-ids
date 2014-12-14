@@ -1,0 +1,6 @@
+# IDSH Default none filter Module
+# This Plugin just prints out everything in filter_run
+
+read data
+echo $data
+exit 0
