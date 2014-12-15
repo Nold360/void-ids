@@ -1,0 +1,31 @@
+#!/bin/sh
+# void - IDS
+#   - PMS Module: opkg
+
+# file to save md5sums to... maybe /tmp isn't the best place for this
+# But it will save your NAND from dying..
+MD5SUM_DB=/tmp/void_opkg.db
+
+if [ ! -e /usr/lib/opkg/info/ ] ; then
+	exit 1
+fi
+
+# Function generating an md5sum-"DB", opkg doesn't have a feature for this build in
+gen_md5sums() {
+	rm -f ${MD5SUM_DB} 2>/dev/null
+	cat /usr/lib/opkg/info/*.list 2>/dev/null | xargs md5sum 2>/dev/null >> ${MD5SUM_DB}
+}
+
+# If no md5sums exist, generate md5.db and exit
+( [ ! -f ${MD5SUM_DB} ] && gen_md5sums ) && exit 0
+
+# Check if files have changed
+IFS=$'\n'
+for file in $(md5sum -c ${MD5SUM_DB} 2>/dev/null | egrep -v "OK$"); do
+	echo "..5.....;;$(echo $file | cut -f1 -d:)"	
+done
+
+gen_md5sums
+
+exit 0
+
