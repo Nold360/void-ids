@@ -1,8 +1,12 @@
 #!/bin/bash
-# Intrusion Detection Script
+# void - Intrusion Detection Script
 #
-CONFIG_FILE="/etc/idsh/idsh.conf"
-MODULE_PATH="/usr/share/idsh/modules/"	
+# By Gerrit 'Nold' Pannek - 2014
+# Copyright: GPLv3 or higher
+#
+
+CONFIG_FILE="/etc/void/void.conf"
+MODULE_PATH="/usr/share/void/modules/"	
 
 function detect_pms {
 	for module in $(ls -1 ${MODULE_PATH}/pms/*); do

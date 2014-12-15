@@ -1,13 +1,13 @@
-idsh
+void
 ====
 
-Intrusion Detection System using bash and the Systems Package Manager System
+void - Intrusion Detection System using bash and the Systems Package Manager System
 
 
 How it works
 ====
 
-The idea behind idsh was, to have an simple IDS based on the tools provided with
+The idea behind void was, to have an simple IDS based on the tools provided with
 every Linux distribution. 
 
 F.e. rpm has the "-V" Parameter to verify the integrity of an package.
@@ -20,7 +20,7 @@ So all the tools you would probably need are on your system, you just got to use
 Structure & Modules
 ====
 
-idsh should be as portable and as modular as possible. That's why the input, filtering and output 
+void should be as portable and as modular as possible. That's why the input, filtering and output 
 is done by "modules"; small scripts (or even binarys) that take data, do something with it, and
 print them out againt.
 

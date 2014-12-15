@@ -1,4 +1,4 @@
-# IDSH Default none filter Module
+# void IDS - Default none filter Module
 # This Plugin just prints out everything in filter_run
 
 read data

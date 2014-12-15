@@ -1,0 +1,7 @@
+#!/bin/bash
+# Simple rpm PackageManagerSystem Module for void - Intrusion Detection Script
+
+# Since we use rpm-syntax it's pretty easy
+# We only need to replace spaces by ";"
+#
+rpm -Va | awk '{ if ($2 == "c") print $1";"$2";"$3; else print $1";;"$2}'

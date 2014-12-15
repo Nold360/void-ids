@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# IDSH - Intrusion Detection Script 
+# void - Intrusion Detection Script 
 # Package Manager Module
 #
 # PMS: dpkg
@@ -18,7 +18,7 @@ CONFIG_FILE_CHECK=false
 ## usr/sbin/lighttpd: FAILED open or read
 ## md5sum: WARNING: 1 listed file could not be read
 function pms_run {
-	CONFIG_FILE_DB="/var/cache/idsh_pms_dpkg.db"
+	CONFIG_FILE_DB="/var/cache/void_pms_dpkg.db"
 
 	# dpkg < 1.17 doesn't support "--verify"... we need some workaround...
 	if [ $(dpkg --version | egrep -o [0-9]\.[0-9]*\.[0-9]* | head -1 | cut -f2 -d.) -lt 17 ] ; then
@@ -69,7 +69,7 @@ function pms_run {
 }
 
 function pms_postrun {
-	CONFIG_FILE_DB="/var/cache/idsh_pms_dpkg.db"
+	CONFIG_FILE_DB="/var/cache/void_pms_dpkg.db"
 
 	if $CONFIG_FILE_CHECK  && [ $(dpkg --version | egrep -o [0-9]\.[0-9]*\.[0-9]* | head -1 | cut -f2 -d.) -lt 17 ]; then
 		rm $CONFIG_FILE_DB &>/dev/null
